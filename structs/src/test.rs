@@ -111,11 +111,33 @@ struct TaylorSwiftSong {
     duration_sec: u32,
 }
 
+impl TaylorSwiftSong {
+    /// This is an associated function, that not require the self parameter.
+    /// this is equivalent as contractor in java.
+    fn new(title: String, release_year: u32, duration_sec: u32) -> Self {
+        Self {
+            title,
+            release_year,
+            duration_sec,
+        }
+    }
+}
+
 // self -> imutable instance
 // mut self -> mutable instance
 // &self -> immutable reference to the instance
 // &mut self -> mutable reference to the instance
 impl TaylorSwiftSong {
+    /*   /// This is an associated function, that not require the self parameter.
+    /// this is equivalent as contractor in java.
+    fn new(title: String, release_year: u32, duration_sec: u32) -> Self {
+        Self{
+            title,
+            release_year,
+            duration_sec,
+        }
+    }*/
+
     // immutable struct value (self parameter take ownership)
     // mutable struct value (self parameter take ownership, has permission to mutate )
     // immutable reference to the struct instance (no ownership moved)
@@ -209,7 +231,8 @@ fn method_with_multiple_parameters() {
     );
 
     if blank_space.is_longer_than(&all_too_well) {
-        println!(            "{} is longer than {}",
+        println!(
+            "{} is longer than {}",
             blank_space.title, all_too_well.title
         );
     } else {
@@ -220,11 +243,65 @@ fn method_with_multiple_parameters() {
     }
 }
 #[test]
-fn calling_methods_from_other_methods(){
-    let blank_space = TaylorSwiftSong{
+fn calling_methods_from_other_methods() {
+    let blank_space = TaylorSwiftSong {
         title: String::from("Blank Space"),
         release_year: 2021,
         duration_sec: 235,
     };
     blank_space.display_song_info_reference();
+}
+#[test]
+fn associated_functions() {
+    let blank_space = TaylorSwiftSong::new(String::from("Blank Space"), 2021, 2022);
+    println!("blank_space: {:?}", blank_space);
+}
+#[test]
+fn multiple_impl_blocks() {
+    let mut blank_space = TaylorSwiftSong {
+        title: String::from("Blank Space"),
+        release_year: 2021,
+        duration_sec: 235,
+    };
+    blank_space.double_length_reference();
+    println!("blank_space: {:?}", blank_space);
+}
+/// Builder design pattern
+#[derive(Debug)]
+struct Computer {
+    cpu: String,
+    memory: u32,
+    hard_drive_capacity: u32,
+}
+impl Computer {
+    fn new(cpu: String, memory: u32, hard_drive_capacity: u32) -> Computer {
+        Self {
+            cpu,
+            memory,
+            hard_drive_capacity,
+        }
+    }
+    // implement the build design pattern, return self !
+    fn upgrade_cpu(&mut self, new_cpu: String) -> &mut Self{
+        self.cpu = new_cpu;
+        self
+    }
+    fn upgrade_memory(&mut self, new_memory: u32) -> &mut Self {
+        self.memory = new_memory;
+        self
+    }
+    fn upgrade_hard_drive(&mut self, new_hard_drive_capacity: u32) -> &mut Self {
+        self.hard_drive_capacity = new_hard_drive_capacity;
+        self
+    }
+}
+#[test]
+fn builder_pattern() {
+    let mut computer = Computer::new(String::from("M3 Max"), 64, 2);
+    //using build design pattern here.
+    computer.upgrade_cpu(String::from("M4 Max"))
+        .upgrade_memory(128)
+        .upgrade_hard_drive(4);
+    println!("computer: {:#?}", computer);
+
 }
