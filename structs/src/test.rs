@@ -305,3 +305,82 @@ fn builder_pattern() {
     println!("computer: {:#?}", computer);
 
 }
+// Hours, minutes
+struct ShortDuration(u32, u32);
+//year, months
+struct LongDuration(u32, u32);
+#[test]
+fn tuple_struct() {
+    let mut work_shift = ShortDuration(1, 2);
+    println!("{} hour, {} minutes", work_shift.0, work_shift.1);
+    let mut ara = LongDuration(5, 3);
+    println!("{} years, {} months", ara.0, ara.1);
+    // was expecting this 2 has different type, but somehow they can part ?
+    // if we code it as let then it will shadow the type and work
+    //let work_shift = ara;
+    //but will not work if we do, wrong type.
+    //work_shift = ara
+    println!("{} hours, {} minutes", work_shift.0, work_shift.1);
+    // wrong type can call the function below using longDuration.
+    //go_to_work(ara);
+
+    //normal tuple
+    let work_shift_tuple = (1, 2);
+    let era_tuple = (5, 3);
+    //we can able to do that as a tuple because this is the same type
+    let work_shift_tuple = era_tuple;
+}
+
+fn go_to_work(time: ShortDuration) {
+    println!("{} hours, {} minutes", time.0, time.1);
+}
+
+struct AlwaysEqual;  //this is a unit like struct, no value no nothing just name no data.
+#[test]
+fn unit_like_structs() {
+    let my_empty_struct = AlwaysEqual;
+}
+#[derive(Debug)]
+struct Flight {
+    origin: String,
+    destination: String,
+    price: f64,
+    passengers: u32,
+}
+impl Flight {
+    fn new(origin: String, destination: String, price: f64, passengers: u32) -> Self {
+        Self {
+            origin,
+            destination,
+            price,
+            passengers,
+        }
+    }
+}
+impl Flight {
+    fn change_destination(&mut self, destination: String) {
+        self.destination = destination;
+    }
+    fn increase_price(&mut self) {
+        self.price *= 1.20;
+    }
+    fn itinerary(&mut self) {
+        println!("{} -> {}", self.origin, self.destination);
+    }
+}
+#[test]
+fn project_section_9() {
+    let mut flight = Flight::new(String::from("New York"), String::from("Los Angeles"), 300.0, 150);
+    println!("flight: {:#?}", flight);
+    flight.itinerary();
+    flight.change_destination(String::from("Viet Nam"));
+    flight.increase_price();
+    flight.itinerary();
+    println!("flight: {:#?}", flight);
+    let flgiht2 = Flight {
+        origin: String::from("Hanoi"),
+        destination: String::from("Saigon"),
+        ..flight
+    };
+    println!("flight 2: {:#?}", flgiht2);
+}
