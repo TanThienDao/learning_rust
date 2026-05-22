@@ -1,18 +1,22 @@
-const FLOOR_SOACE: i32 = 10000;
+pub const FLOOR_SOACE: i32 = 10000;
 pub const MANAGER: &str = "Ivan Inventory";
 
-#[derive(Debug)]
-enum ProductCategory {
-    Ladder,
-    Hammer,
-}
-#[derive(Debug)]
-struct Item {
-    name: String,
-    category: ProductCategory,
-    quality: f64,
+pub fn talk_to_manager() {
+    println!("Hey {}, how's your coffee?", MANAGER);
+    println!("absolute path {}", crate::inventory::MANAGER);
 }
 
-fn talk_to_manager() {
-    println!("Hey {}, how's your coffee?", MANAGER);
-}
+pub mod product;
+/*mod product {
+    #[derive(Debug)]
+    pub enum ProductCategory {
+        Ladder,
+        Hammer,
+    }
+    #[derive(Debug)]
+    pub struct Item {
+        pub name: String,
+        pub category: ProductCategory,
+        pub quality: f64,
+    }
+}*/
