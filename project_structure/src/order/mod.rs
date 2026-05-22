@@ -1,4 +1,4 @@
-
+/// Our jolly manager
 pub const MANAGER: &str = "Olga Orders";
 
 fn talk_to_manager() {
