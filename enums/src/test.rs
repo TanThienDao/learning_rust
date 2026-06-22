@@ -65,89 +65,79 @@ enum PaymentMethodType3 {
     CreditCard(String, i32),
     DebitCard(String, bool),
     //Paypal(Credentials),
-    Paypal {
-        username: String,
-        password: String,
-    }
+    Paypal { username: String, password: String },
 }
 #[test]
 fn struct_variants() {
     let visa = PaymentMethodType3::CreditCard(String::from("0034-5678-9495-5613"), 12);
     println!("visa: {:#?}", visa);
 
-    let paypal = PaymentMethodType3::Paypal{
+    let paypal = PaymentMethodType3::Paypal {
         username: String::from("user123"),
-        password: String::from("password123")
+        password: String::from("password123"),
     };
     println!("PayPal info: {:#?}", paypal);
 }
 
 #[derive(Debug)]
-enum Beans{
+enum Beans {
     Pinto,
     Black,
 }
 #[derive(Debug)]
-enum Meat{
+enum Meat {
     Chicken,
     Steak,
 }
 #[derive(Debug)]
-enum RestaurantItem{
+enum RestaurantItem {
     Burrito(Meat),
-    Bowl{
-        meat: Meat,
-        beans: Beans,
-    },
+    Bowl { meat: Meat, beans: Beans },
     VeganPlate,
 }
 #[test]
 fn nesting_enums_in_enums() {
     let lunch = RestaurantItem::Burrito(Meat::Steak);
-    let dinner = RestaurantItem::Bowl{
+    let dinner = RestaurantItem::Bowl {
         meat: Meat::Steak,
         beans: Beans::Pinto,
     };
     let abandon_meal = RestaurantItem::VeganPlate;
-    println!("lunch was {:#?} and dinner was {:#?}", lunch,dinner);
+    println!("lunch was {:#?} and dinner was {:#?}", lunch, dinner);
     println!("abandon meal was {:#?}", abandon_meal);
 }
-enum OperatingSystem{
+enum OperatingSystem {
     Window,
     MacOS,
     Linux,
 }
-fn years_since_release(os : OperatingSystem) -> u32 {
+fn years_since_release(os: OperatingSystem) -> u32 {
     match os {
         OperatingSystem::Window => 20,
         OperatingSystem::MacOS => 10,
         OperatingSystem::Linux => 8,
         _ => panic!("Unknown operating system"),
-
     }
-
 }
 #[test]
-fn the_mattch_keyword_I (){
+fn the_mattch_keyword_I() {
     let my_computter = OperatingSystem::Linux;
     let a = years_since_release(my_computter);
     println!("My computer OS is {} uear old", a);
 }
-fn years_since_release_2(os : OperatingSystem) -> u32 {
+fn years_since_release_2(os: OperatingSystem) -> u32 {
     match os {
         OperatingSystem::Window => {
             println!("Quite old Operating System");
             20
-        },
+        }
         OperatingSystem::MacOS => 10,
         OperatingSystem::Linux => 8,
         _ => panic!("Unknown operating system"),
-
     }
-
 }
 #[test]
-fn the_mattch_keyword_II (){
+fn the_mattch_keyword_II() {
     let my_computter = OperatingSystem::Window;
     let a = years_since_release_2(my_computter);
     println!("My computer OS is {} uear old", a);
@@ -157,18 +147,18 @@ fn wash_laundry(cycle: LandryCycle) {
         LandryCycle::Cold => {
             println!("Washing with cold water")
         }
-        LandryCycle::Hot {temperature} => {
+        LandryCycle::Hot { temperature } => {
             println!("Washing with hot water at {} degrees", temperature)
         }
-        LandryCycle::Delicate (fabric) => {
+        LandryCycle::Delicate(fabric) => {
             println!("Washing delicate fabric: {}", fabric)
         }
     }
 }
 enum LandryCycle {
     Cold,
-    Hot {temperature: u32},
-    Delicate (String),
+    Hot { temperature: u32 },
+    Delicate(String),
 }
 impl LandryCycle {
     fn wash_laundry(&self) {
@@ -176,7 +166,7 @@ impl LandryCycle {
             LandryCycle::Cold => {
                 println!("Washing with cold water")
             }
-            LandryCycle::Hot {temperature} => {
+            LandryCycle::Hot { temperature } => {
                 println!("Washing with hot water at {} degrees", temperature)
             }
             LandryCycle::Delicate(fabric) => {
@@ -186,8 +176,8 @@ impl LandryCycle {
     }
 }
 #[test]
-fn the_mattch_keyword_III(){
-    wash_laundry(LandryCycle::Hot {temperature: 20});
+fn the_mattch_keyword_III() {
+    wash_laundry(LandryCycle::Hot { temperature: 20 });
     wash_laundry(LandryCycle::Cold);
     wash_laundry(LandryCycle::Delicate(String::from("Cotton")));
 }
@@ -195,7 +185,7 @@ fn the_mattch_keyword_III(){
 #[test]
 fn defining_methods_on_enums() {
     LandryCycle::Cold.wash_laundry();
-    LandryCycle::Hot{temperature: 30}.wash_laundry();
+    LandryCycle::Hot { temperature: 30 }.wash_laundry();
     LandryCycle::Delicate(String::from("Cotton")).wash_laundry();
 
     let delicate_cycle = LandryCycle::Delicate(String::from("Silk"));
@@ -210,7 +200,7 @@ enum OnlineOrderStatus {
     Trask,
 }
 impl OnlineOrderStatus {
-    fn check(&self){
+    fn check(&self) {
         match self {
             OnlineOrderStatus::Delivered => {
                 println!("Your order has been delivered. Enjoy your purchase!");
@@ -222,26 +212,25 @@ impl OnlineOrderStatus {
                 println!("Your order has been shipped.");
             }
             other_status => {
-                println!("Your order has been {:?}",other_status);
+                println!("Your order has been {:?}", other_status);
             }
         }
     }
 }
 #[test]
-fn the_match_keyword_IV_catching_nultiple_values(){
+fn the_match_keyword_IV_catching_nultiple_values() {
     let order_status = OnlineOrderStatus::Shipped;
     order_status.check();
-
 }
 
-enum Milk{
+enum Milk {
     LowFat(i32),
     WholeMilk,
-    NonDairy{kind: String},
+    NonDairy { kind: String },
 }
 impl Milk {
     fn drink(self) -> Milk {
-        match  self {
+        match self {
             Milk::LowFat(2) => {
                 println!("Drinking low-fat milk with 2% fat");
                 Milk::LowFat(2)
@@ -254,7 +243,7 @@ impl Milk {
                 println!("Drinking whole milk");
                 Milk::WholeMilk
             }
-            Milk::NonDairy{kind} => {
+            Milk::NonDairy { kind } => {
                 println!("Drinking non-dairy milk of kind: {}", kind);
                 Milk::NonDairy { kind }
             }
@@ -262,13 +251,13 @@ impl Milk {
     }
 }
 #[test]
-fn the_match_keyword_V_match_with_exact_value(){
+fn the_match_keyword_V_match_with_exact_value() {
     Milk::LowFat(1).drink();
     Milk::WholeMilk.drink();
     Milk::LowFat(2).drink();
 }
 #[test]
-fn the_if_let_construct(){
+fn the_if_let_construct() {
     // The if let construct combine an if statement with a variable  declaration.
     let my_beverage = Milk::WholeMilk;
 
@@ -285,10 +274,12 @@ fn the_if_let_construct(){
         println!("I am drinking something else");
     }
 
-    let none_dariy = Milk::NonDairy{kind: String::from("none_dariy")};
-    if let Milk::NonDairy{kind} = none_dariy {
-        println!("I am drinking something else {}",kind);
-    }else {
+    let none_dariy = Milk::NonDairy {
+        kind: String::from("none_dariy"),
+    };
+    if let Milk::NonDairy { kind } = none_dariy {
+        println!("I am drinking something else {}", kind);
+    } else {
         println!("I am drinking something else");
     }
 }
@@ -300,18 +291,18 @@ fn the_let_else_construct() {
     // this else onlu execute when the my_beverage is not lowfar.
     let Milk::LowFat(percent) = my_beverage else {
         println!("I am not drinking low-fat milk");
-        return;// need to use return to terminate if the percentage is not available.
+        return; // need to use return to terminate if the percentage is not available.
     };
     println!("{percent}% milk is available here");
 
-    let Milk::NonDairy {kind} = my_beverage else {
+    let Milk::NonDairy { kind } = my_beverage else {
         println!("I am not drinking non-dairy milk");
         return;
     };
     println!("I am drinking non-dairy milk of kind: {}", kind);
 }
 #[derive(Debug)]
-enum Tier{
+enum Tier {
     Gold,
     Silver,
     Platinum,
@@ -319,30 +310,34 @@ enum Tier{
 #[derive(Debug)]
 enum Subcription {
     Free,
-    Basic (f64,u32),
-    Premium {
-        tier: Tier,
-    },
+    Basic(f64, u32),
+    Premium { tier: Tier },
 }
-impl Subcription{
-    fn summarize (&self){
+impl Subcription {
+    fn summarize(&self) {
         match self {
             Subcription::Free => {
                 println!("You have a limited access to the site.");
             }
-            Subcription::Basic(price,month) => {
-                println!("You have limited access to the site's premium features for {} for {}",price,month);
+            Subcription::Basic(price, month) => {
+                println!(
+                    "You have limited access to the site's premium features for {} for {}",
+                    price, month
+                );
             }
-            Subcription::Premium{tier} => {
-                println!("You have full access to the site's premium feature.\n\
-                Your tier is {:?}",tier);
+            Subcription::Premium { tier } => {
+                println!(
+                    "You have full access to the site's premium feature.\n\
+                Your tier is {:?}",
+                    tier
+                );
             }
         }
     }
 }
 #[test]
-fn project_section_10 (){
+fn project_section_10() {
     Subcription::Free.summarize();
     Subcription::Basic(9.99, 6).summarize();
-    Subcription::Premium{tier: Tier::Gold}.summarize();
+    Subcription::Premium { tier: Tier::Gold }.summarize();
 }
