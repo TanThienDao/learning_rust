@@ -12,7 +12,10 @@ fn main() {
     println!("1 {:#?}", mayonaise);
 
     let mustard = sources_to_meals.get("Mustard");
-    println!("2 {:#?}", mustard);
+    match mustard {
+        Some(meal) => println!("Mayonnaise {meal:?}"),
+        None => println!("No Mayonnaise"),
+    }
 
     sources_to_meals
         .entry("Soy Sauce")
