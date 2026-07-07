@@ -21,6 +21,10 @@ impl Hotel {
     fn get_reservation(&self) -> &HashMap<String, u32> {
         &self.reservations
     }
+
+    fn summarize(&self) -> String {
+        format!("{}: {}", self.name, self.get_description())
+    }
 }
 impl Accommodation for Hotel {
     fn get_description(&self) -> String {
@@ -66,26 +70,25 @@ impl TestDefault {
             list: vec![],
         }
     }
+
+    fn summarize(&self) -> String {
+        format!("{}: {}", self.name, self.get_description())
+    }
 }
 impl Accommodation for TestDefault {
     fn book(&mut self, name: &str, nights: u32) {
         self.list.push(Hotel::new(name));
     }
 }
+fn book_for_one_night(entity: &mut impl Accommodation, guest: &str) {
+    println!("Booking for one night: {}", entity.get_description());
+    entity.book(guest, 1);
+}
 fn main() {
-    let mut hotel = Hotel::new("The Luxe");
-    println!("{}", hotel.get_description());
-    let mut air_bn = AirBnB::new("Tan");
-    println!("{}", air_bn.get_description());
-    hotel.book("The Luxe", 20);
-    println!(" Hotel info: {:#?}", hotel.get_reservation());
-    air_bn.book("Nam", 21);
-    println!("Airbnb info: {:#?}", air_bn.get_guests());
-    println!("Hotel info: {:#?}", hotel);
-    println!("AirBnB info: {:#?}", air_bn);
-
-    //default implementation
-    let mut test_default = TestDefault::new("TestDefault");
-    println!("{}", test_default.get_description());
-    println!("TestDefault info: {:#?}", test_default);
+    let mut hotel = Hotel::new("Hotel");
+    let mut air_bn = AirBnB::new("Air BnB");
+    book_for_one_night(&mut hotel, "Peter");
+    book_for_one_night(&mut air_bn, "Dog");
+    println!("Hotel reservations: {:#?}", hotel);
+    println!("Air bn: {:#?}", air_bn);
 }
