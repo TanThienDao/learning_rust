@@ -84,7 +84,11 @@ impl Accommodation for TestDefault {
 }
 impl Description for TestDefault {}
 fn book_for_one_night<T: Accommodation + Description>(entity: &mut T, guest: &str) {
-    println!("Booking for one night at {} for {}", entity.get_description(), guest);
+    println!(
+        "Booking for one night at {} for {}",
+        entity.get_description(),
+        guest
+    );
     entity.book(guest, 1);
 }
 /// A trait bouynd requires that a generic type implement a specific trait

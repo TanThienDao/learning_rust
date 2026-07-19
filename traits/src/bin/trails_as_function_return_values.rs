@@ -118,15 +118,11 @@ where
     first.get_description();
     secound.book(guest, 1);
 }
+fn choose_best_place_to_stay() -> impl Accommodation + Description {
+    Hotel::new("The luxe")
+}
 fn main() {
-    let mut hotel = Hotel::new("Hotel");
+    let mut hotel = choose_best_place_to_stay();
     let mut air_bn = AirBnB::new("Air BnB");
-    mix_and_match_3(&mut air_bn, &mut hotel, "Bob");
-    println!("{:#?} {:#?}", hotel, air_bn);
-    let mut test_default = TestDefault::new("Test");
-    println!("{:#?}", test_default.get_description());
-
-    mix_and_match_3(&mut test_default, &mut hotel, "Bob");
-    println!("{:#?}", test_default);
-    println!("{:#?} {:#?}", hotel, air_bn);
+    mix_and_match(&mut hotel, &mut air_bn, "Air BnB");
 }
