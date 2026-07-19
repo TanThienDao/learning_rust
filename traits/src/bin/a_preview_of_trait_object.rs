@@ -1,6 +1,8 @@
 use std::collections::HashMap;
+use std::fmt::{Debug, Display};
 
-trait Accommodation {
+trait Accommodation: Debug {
+    // Make Debug a supertrait of Accommodation
     fn book(&mut self, name: &str, nights: u32);
 }
 trait Description {
@@ -9,17 +11,26 @@ trait Description {
     }
 }
 #[derive(Debug)]
-struct Hotel {
-    name: String,
+struct Hotel<T> {
+    name: T,
     reservations: HashMap<String, u32>,
 }
-impl Hotel {
-    fn new(name: &str) -> Self {
+impl<T> Hotel<T> {
+    fn new(name: T) -> Self {
         Self {
-            name: name.to_string(),
+            name: name,
             reservations: HashMap::new(),
         }
     }
+}
+// using trait bound to resolve the issue with to summarize function missing display trait
+impl<T: Display> Hotel<T> {
+    /*    fn new(name: T) -> Self {
+        Self {
+            name: name,
+            reservations: HashMap::new(),
+        }
+    }*/
     fn get_reservation(&self) -> &HashMap<String, u32> {
         &self.reservations
     }
@@ -28,14 +39,14 @@ impl Hotel {
         format!("{}: {}", self.name, self.get_description())
     }
 }
-impl Accommodation for Hotel {
+impl<T: Display + Debug> Accommodation for Hotel<T> {
     fn book(&mut self, name: &str, night: u32) {
         self.reservations.insert(name.to_string(), night);
     }
 }
-impl Description for Hotel {
+impl<T: Display> Description for Hotel<T> {
     fn get_description(&self) -> String {
-        format!("{} is the pinnacle of luxury", self.name)
+        format!("{} is the pinnacle of luxury hotel", self.name)
     }
 }
 #[derive(Debug)]
@@ -61,15 +72,15 @@ impl Accommodation for AirBnB {
 }
 impl Description for AirBnB {
     fn get_description(&self) -> String {
-        format!("{} is the pinnacle of luxury", self.host)
+        format!("{} is the pinnacle of luxury airbnb", self.host)
     }
 }
 #[derive(Debug)]
-struct TestDefault {
+struct TestDefault<T> {
     name: String,
-    list: Vec<Hotel>,
+    list: Vec<Hotel<T>>,
 }
-impl TestDefault {
+impl<T> TestDefault<T> {
     fn new(name: &str) -> Self {
         Self {
             name: name.to_string(),
@@ -77,12 +88,12 @@ impl TestDefault {
         }
     }
 }
-impl Accommodation for TestDefault {
+/*impl<T> Accommodation for TestDefault<T> {
     fn book(&mut self, name: &str, nights: u32) {
         self.list.push(Hotel::new(name));
     }
-}
-impl Description for TestDefault {}
+}*/
+impl<T> Description for TestDefault<T> {}
 fn book_for_one_night<T: Accommodation + Description>(entity: &mut T, guest: &str) {
     println!(
         "Booking for one night at {} for {}",
@@ -118,15 +129,29 @@ where
     first.get_description();
     secound.book(guest, 1);
 }
-fn main() {
-    let mut hotel = Hotel::new("Hotel");
-    let mut air_bn = AirBnB::new("Air BnB");
-    mix_and_match_3(&mut air_bn, &mut hotel, "Bob");
-    println!("{:#?} {:#?}", hotel, air_bn);
-    let mut test_default = TestDefault::new("Test");
-    println!("{:#?}", test_default.get_description());
+fn choose_best_place_to_stay() -> impl Accommodation + Description {
+    Hotel::new("The luxe")
+}
 
-    mix_and_match_3(&mut test_default, &mut hotel, "Bob");
-    println!("{:#?}", test_default);
-    println!("{:#?} {:#?}", hotel, air_bn);
+/// A trait object is an instance of a type that implements a particular trait
+/// whose methods will be accessed at runtime using a feature called dynamic dispatch.
+fn main() {
+    let mut hotel1 = Hotel::new(String::from("The luxe"));
+    let mut airbnb = AirBnB::new("air bnb house ");
+
+    let stays: Vec<&dyn Description> = vec![&hotel1, &airbnb];
+    println!("{}", stays[0].get_description());
+    println!("{}", stays[1].get_description());
+
+    let mut stays_2: Vec<&mut dyn Accommodation> = vec![&mut hotel1, &mut airbnb]; // Changed back to dyn Accommodation
+    stays_2[0].book("peer", 2);
+    stays_2[1].book("haha", 3);
+
+    //println!("{:#?}", hotel1);
+
+    //println!("{:#?}", airbnb);
+
+    for place in stays_2.iter_mut() {
+        println!("check: {:#?}", place);
+    }
 }
