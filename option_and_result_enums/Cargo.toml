@@ -1,6 +1,7 @@
 [package]
-name = "traits"
+name = "option_and_result_enums"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+log = "0.4.30"
