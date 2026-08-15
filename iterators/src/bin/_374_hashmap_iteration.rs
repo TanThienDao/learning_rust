@@ -1,4 +1,3 @@
-
 use std::collections::HashMap;
 
 fn main() {
@@ -13,7 +12,8 @@ fn main() {
     }
     println!("Total Total Tasks: {:#?}", todos);
 
-    for (_, completion_status) in todos.iter_mut() { // dont intent to do anything with the key, so we use _ to ignore it
+    for (_, completion_status) in todos.iter_mut() {
+        // dont intent to do anything with the key, so we use _ to ignore it
         *completion_status = false; // Mark all tasks as not completed
     }
 

@@ -9,7 +9,9 @@ fn main() {
     println!("Is the iterator exhausted? {:?}", my_iterator.next());
     //println!( "Vector {:?}", my_vector);
 
-    println!("Is the iterator exhausted? {:?}", my_iterator.next().is_none());
+    println!(
+        "Is the iterator exhausted? {:?}",
+        my_iterator.next().is_none()
+    );
     println!("what in site my_iterator ? ->  {:?}", my_iterator);
-
 }

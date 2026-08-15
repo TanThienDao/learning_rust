@@ -1,6 +1,5 @@
 /// The iter_mut method will create an iterator that yields mutable reference to the collection's elements.
 
-
 fn main() {
     let mut flavours = [
         String::from("Blue"),
@@ -24,7 +23,7 @@ fn main() {
     // like String, are not Copy types and cannot be implicitly copied.
     // Therefore, we need to dereference the mutable reference to access the underlying value and modify it.
 
-    let mut shool_grades = [85,90, 95, 100];
+    let mut shool_grades = [85, 90, 95, 100];
 
     for grade in &mut shool_grades {
         *grade -= 2;
@@ -51,5 +50,4 @@ fn main() {
     // MUTABLE REFERENCES
     // for value in &mut collection
     // for value in collection.iter_mut()
-
 }
